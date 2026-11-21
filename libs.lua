@@ -111,12 +111,11 @@ local Library = { } do
         if not MainOk then warn(MainFont) end
 
         UiFont = (MainOk and MainFont) or Font.fromEnum(Enum.Font.GothamMedium)
-        UiFontBold = Font.fromEnum(Enum.Font.GothamBold)
+        UiFontBold = UiFont
     end
 
     Library.Font = UiFont
     Library.TitleFont = UiFontBold
-    Library.MonoFont = Font.fromEnum(Enum.Font.Code)
 
     local IconPack
 
@@ -202,24 +201,24 @@ local Library = { } do
     Library.WindowHeight = 540
 
     Library.Theme = {
-        Background = Color3.fromRGB(11, 11, 13),
-        Section = Color3.fromRGB(17, 17, 20),
-        Element = Color3.fromRGB(23, 23, 27),
-        Light = Color3.fromRGB(30, 30, 35),
-        Hover = Color3.fromRGB(38, 38, 44),
-        Line = Color3.fromRGB(32, 32, 37),
+        Background = Color3.fromRGB(20, 22, 26),
+        Section = Color3.fromRGB(23, 26, 30),
+        Element = Color3.fromRGB(27, 31, 35),
+        Light = Color3.fromRGB(34, 39, 44),
+        Hover = Color3.fromRGB(38, 43, 49),
+        Line = Color3.fromRGB(27, 31, 35),
         Text = Color3.fromRGB(255, 255, 255),
-        DimText = Color3.fromRGB(142, 142, 150),
-        DimIcon = Color3.fromRGB(142, 142, 150),
-        Accent = Color3.fromRGB(255, 255, 255)
+        DimText = Color3.fromRGB(120, 120, 120),
+        DimIcon = Color3.fromRGB(120, 120, 120),
+        Accent = Color3.fromRGB(179, 165, 255)
     }
 
     Library.AccentPresets = {
-        Color3.fromRGB(255, 255, 255),
-        Color3.fromRGB(205, 205, 215),
-        Color3.fromRGB(160, 160, 172),
-        Color3.fromRGB(120, 200, 255),
-        Color3.fromRGB(190, 150, 255)
+        Color3.fromRGB(179, 165, 255),
+        Color3.fromRGB(120, 132, 255),
+        Color3.fromRGB(96, 170, 255),
+        Color3.fromRGB(72, 214, 168),
+        Color3.fromRGB(245, 130, 120)
     }
 
     local function MakePreset(Name, Colors)
@@ -236,54 +235,54 @@ local Library = { } do
     end
 
     Library.ThemePresets = {
-        MakePreset("Monochrome", Library.Theme),
-        MakePreset("Obsidian", {
-            Background = Color3.fromRGB(8, 8, 10),
-            Section = Color3.fromRGB(15, 15, 18),
-            Element = Color3.fromRGB(21, 21, 26),
-            Light = Color3.fromRGB(30, 30, 36),
-            Hover = Color3.fromRGB(40, 40, 47),
-            Line = Color3.fromRGB(32, 32, 38),
-            Text = Color3.fromRGB(255, 255, 255),
-            DimText = Color3.fromRGB(140, 140, 150),
-            DimIcon = Color3.fromRGB(140, 140, 150),
-            Accent = Color3.fromRGB(255, 255, 255)
+        MakePreset("Default", Library.Theme),
+        MakePreset("Azure", {
+            Background = Color3.fromRGB(16, 20, 30),
+            Section = Color3.fromRGB(20, 25, 37),
+            Element = Color3.fromRGB(25, 31, 46),
+            Light = Color3.fromRGB(33, 41, 60),
+            Hover = Color3.fromRGB(39, 48, 70),
+            Line = Color3.fromRGB(25, 31, 46),
+            Text = Color3.fromRGB(233, 239, 250),
+            DimText = Color3.fromRGB(110, 120, 142),
+            DimIcon = Color3.fromRGB(110, 120, 142),
+            Accent = Color3.fromRGB(96, 150, 255)
         }),
-        MakePreset("Silver", {
-            Background = Color3.fromRGB(16, 16, 20),
-            Section = Color3.fromRGB(24, 24, 29),
-            Element = Color3.fromRGB(32, 32, 38),
-            Light = Color3.fromRGB(42, 42, 49),
-            Hover = Color3.fromRGB(54, 54, 62),
-            Line = Color3.fromRGB(40, 40, 47),
-            Text = Color3.fromRGB(250, 250, 255),
-            DimText = Color3.fromRGB(165, 165, 176),
-            DimIcon = Color3.fromRGB(165, 165, 176),
-            Accent = Color3.fromRGB(225, 225, 235)
+        MakePreset("Emerald", {
+            Background = Color3.fromRGB(14, 24, 20),
+            Section = Color3.fromRGB(18, 30, 25),
+            Element = Color3.fromRGB(23, 37, 31),
+            Light = Color3.fromRGB(30, 48, 40),
+            Hover = Color3.fromRGB(36, 56, 47),
+            Line = Color3.fromRGB(23, 37, 31),
+            Text = Color3.fromRGB(232, 244, 238),
+            DimText = Color3.fromRGB(106, 128, 118),
+            DimIcon = Color3.fromRGB(106, 128, 118),
+            Accent = Color3.fromRGB(76, 214, 148)
         }),
-        MakePreset("Ice", {
-            Background = Color3.fromRGB(10, 11, 14),
-            Section = Color3.fromRGB(17, 19, 24),
-            Element = Color3.fromRGB(24, 27, 33),
-            Light = Color3.fromRGB(32, 36, 44),
-            Hover = Color3.fromRGB(42, 47, 57),
-            Line = Color3.fromRGB(31, 35, 42),
-            Text = Color3.fromRGB(255, 255, 255),
-            DimText = Color3.fromRGB(145, 152, 165),
-            DimIcon = Color3.fromRGB(145, 152, 165),
-            Accent = Color3.fromRGB(190, 235, 255)
+        MakePreset("Ocean", {
+            Background = Color3.fromRGB(14, 23, 28),
+            Section = Color3.fromRGB(18, 28, 34),
+            Element = Color3.fromRGB(23, 35, 42),
+            Light = Color3.fromRGB(30, 45, 54),
+            Hover = Color3.fromRGB(36, 53, 63),
+            Line = Color3.fromRGB(23, 35, 42),
+            Text = Color3.fromRGB(230, 240, 244),
+            DimText = Color3.fromRGB(104, 122, 132),
+            DimIcon = Color3.fromRGB(104, 122, 132),
+            Accent = Color3.fromRGB(72, 200, 214)
         }),
-        MakePreset("Ash", {
-            Background = Color3.fromRGB(12, 12, 13),
-            Section = Color3.fromRGB(20, 20, 22),
-            Element = Color3.fromRGB(28, 28, 31),
-            Light = Color3.fromRGB(37, 37, 41),
-            Hover = Color3.fromRGB(48, 48, 53),
-            Line = Color3.fromRGB(36, 36, 40),
-            Text = Color3.fromRGB(245, 245, 248),
-            DimText = Color3.fromRGB(152, 152, 160),
-            DimIcon = Color3.fromRGB(152, 152, 160),
-            Accent = Color3.fromRGB(255, 255, 255)
+        MakePreset("Rose", {
+            Background = Color3.fromRGB(26, 17, 21),
+            Section = Color3.fromRGB(32, 21, 26),
+            Element = Color3.fromRGB(39, 26, 32),
+            Light = Color3.fromRGB(50, 33, 41),
+            Hover = Color3.fromRGB(58, 39, 48),
+            Line = Color3.fromRGB(39, 26, 32),
+            Text = Color3.fromRGB(245, 234, 238),
+            DimText = Color3.fromRGB(132, 110, 118),
+            DimIcon = Color3.fromRGB(132, 110, 118),
+            Accent = Color3.fromRGB(240, 118, 150)
         })
     }
 
@@ -331,12 +330,10 @@ local Library = { } do
     Library.PreloadClock = 0
     Library.Preloaded = setmetatable({ }, { __mode = "k" })
     Library.Animation = {
-        Time = 0.22,
-        Style = Enum.EasingStyle.Quint,
+        Time = 0.25,
+        Style = Enum.EasingStyle.Quart,
         Direction = Enum.EasingDirection.Out
     }
-
-    Library.RunningTweens = setmetatable({ }, { __mode = "k" })
 
     Library.Create = function(Self, Class, Properties)
         local Data = {
@@ -464,50 +461,7 @@ local Library = { } do
             Library.Animation.Direction
         )
 
-        local Running = Library.RunningTweens[Object]
-
-        if not Running then
-            Running = { }
-            Library.RunningTweens[Object] = Running
-        end
-
-        for Index = #Running, 1, -1 do
-            local Entry = Running[Index]
-            local Overlaps = false
-
-            for Property in Properties do
-                if Entry.Properties[Property] then
-                    Overlaps = true
-                    break
-                end
-            end
-
-            if Overlaps then
-                pcall(function() Entry.Tween:Cancel() end)
-                table.remove(Running, Index)
-            end
-        end
-
         local NewTween = TweenService:Create(Object, Info, Properties)
-        local Entry = { Tween = NewTween, Properties = { } }
-
-        for Property in Properties do
-            Entry.Properties[Property] = true
-        end
-
-        table.insert(Running, Entry)
-
-        NewTween.Completed:Connect(function()
-            local Store = Library.RunningTweens[Object]
-            if not Store then return end
-
-            for Index = #Store, 1, -1 do
-                if Store[Index] == Entry then
-                    table.remove(Store, Index)
-                end
-            end
-        end)
-
         NewTween:Play()
 
         return NewTween
@@ -1024,7 +978,7 @@ local Library = { } do
         return Library:Create("TextLabel", {
             Parent = Params.Parent,
             Name = "\0",
-            FontFace = Params.Mono and Library.MonoFont or (Params.Bold and UiFontBold or UiFont),
+            FontFace = Params.Bold and UiFontBold or UiFont,
             Text = Params.Text or "",
             TextSize = Params.TextSize or 15,
             TextColor3 = Library.Theme[Params.Color or "Text"],
@@ -1083,7 +1037,7 @@ local Library = { } do
         local Input = Library:Create("TextBox", {
             Parent = Params.Parent,
             Name = "\0",
-            FontFace = Params.Mono and Library.MonoFont or UiFont,
+            FontFace = UiFont,
             TextColor3 = Library.Theme.Text,
             PlaceholderColor3 = Library.Theme.DimText,
             PlaceholderText = Params.Placeholder or "",
@@ -2007,7 +1961,7 @@ local Library = { } do
         })
 
         local Grabbing = nil
-        local SlideInfo = TweenInfo.new(0.2, Enum.EasingStyle.Quint, Enum.EasingDirection.Out)
+        local SlideInfo = TweenInfo.new(0.2, Enum.EasingStyle.Quart, Enum.EasingDirection.Out)
 
         local function Refresh(Instant)
             Picker.Color = Color3.fromHSV(Picker.Hue, Picker.Saturation, Picker.Value)
@@ -2321,7 +2275,7 @@ local Library = { } do
         end
 
         local function Reflow()
-            local Info = TweenInfo.new(0.22, Enum.EasingStyle.Quint, Enum.EasingDirection.Out)
+            local Info = TweenInfo.new(0.3, Enum.EasingStyle.Quart, Enum.EasingDirection.Out)
             local Y = 15
 
             for _, Value in Library.Notifs do
@@ -2333,7 +2287,7 @@ local Library = { } do
         end
 
         local StartY = StackHeight(Notif)
-        local SlideIn = TweenInfo.new(0.26, Enum.EasingStyle.Quint, Enum.EasingDirection.Out)
+        local SlideIn = TweenInfo.new(0.45, Enum.EasingStyle.Exponential, Enum.EasingDirection.Out)
 
         Items.Frame.Instance.Position = UDim2.new(1, 340, 0, StartY)
         Items.Frame:Tween({ Position = UDim2.new(1, -15, 0, StartY) }, SlideIn)
@@ -2342,7 +2296,7 @@ local Library = { } do
             if Notif.Dead then return end
             Notif.Dead = true
 
-            local Fade = TweenInfo.new(0.22, Enum.EasingStyle.Quint, Enum.EasingDirection.Out)
+            local Fade = TweenInfo.new(0.25, Enum.EasingStyle.Quart, Enum.EasingDirection.Out)
             local Current = Items.Frame.Instance.Position
             local Lift = UDim2.new(1, -15, 0, Current.Y.Offset - 14)
 
@@ -2429,13 +2383,6 @@ local Library = { } do
             Z = 1
         })
 
-        Library:Create("UIStroke", {
-            Parent = Items.Main.Instance,
-            Color = Library.Theme.Text,
-            Thickness = 1,
-            Transparency = 0.85
-        }):AddToTheme({ Color = "Text" })
-
         Items.Rail = MakeFrame({
             Parent = Items.Root.Instance,
             Pos = UDim2.fromOffset(0, RailY),
@@ -2444,13 +2391,6 @@ local Library = { } do
             Round = 10,
             Z = 1
         })
-
-        Library:Create("UIStroke", {
-            Parent = Items.Rail.Instance,
-            Color = Library.Theme.Text,
-            Thickness = 1,
-            Transparency = 0.86
-        }):AddToTheme({ Color = "Text" })
 
         Items.SubBar = MakeFrame({
             Parent = Items.Root.Instance,
@@ -2462,13 +2402,6 @@ local Library = { } do
             Z = 20
         })
 
-        Library:Create("UIStroke", {
-            Parent = Items.SubBar.Instance,
-            Color = Library.Theme.Text,
-            Thickness = 1,
-            Transparency = 0.86
-        }):AddToTheme({ Color = "Text" })
-
         Items.TopBar = MakeFrame({
             Parent = Items.Main.Instance,
             Size = UDim2.fromOffset(W, TopH),
@@ -2477,15 +2410,21 @@ local Library = { } do
             Z = 2
         })
 
+        MakeFrame({
+            Parent = Items.TopBar.Instance,
+            Pos = UDim2.fromOffset(0, TopH - 12),
+            Size = UDim2.fromOffset(W, 12),
+            Color = "Section",
+            Z = 2
+        })
+
         Items.TopLine = MakeFrame({
             Parent = Items.Main.Instance,
             Pos = UDim2.fromOffset(0, 50),
             Size = UDim2.fromOffset(W, 1),
-            Color = "Accent",
+            Color = "Element",
             Z = 3
         })
-
-        Items.TopLine.Instance.BackgroundTransparency = 0.88
 
         Items.HubIcon = MakeImage({
             Parent = Items.TopBar.Instance,
@@ -3089,7 +3028,7 @@ local Library = { } do
             local NewX = SubCenterX - math.floor(Target / 2)
 
             local Info = Instant and TweenInfo.new(0)
-            or TweenInfo.new(0.22, Enum.EasingStyle.Quint, Enum.EasingDirection.Out)
+            or TweenInfo.new(0.24, Enum.EasingStyle.Quart, Enum.EasingDirection.Out)
 
             Library:Tween({
                 Position = UDim2.fromOffset(NewX, SubY),
@@ -3208,18 +3147,6 @@ local Library = { } do
             Library:Tween({ Position = Base }, Rise, Items.Root.Instance)
         end
 
-        function Window:SetWatermark(Bool)
-            if not Library.WatermarkBar then
-                Library:Watermark({ Icon = Self.Icon })
-            end
-
-            if Library.SetWatermark then
-                Library:SetWatermark(Bool)
-            end
-
-            return Library.WatermarkVisible
-        end
-
         task.defer(function()
             Window:PlayIntro()
         end)
@@ -3287,41 +3214,6 @@ local Library = { } do
             Color = "DimIcon",
             Z = 4
         })
-
-        Items.RowStroke = Library:Create("UIStroke", {
-            Parent = Items.Row.Instance,
-            Color = Library.Theme.Text,
-            Thickness = 1,
-            Transparency = 1
-        }):AddToTheme({ Color = "Text" })
-
-        Items.RowUnderline = MakeFrame({
-            Parent = Items.Row.Instance,
-            Pos = UDim2.new(0, 6, 1, -4),
-            Size = UDim2.fromOffset(28, 2),
-            Color = "Accent",
-            Round = 2,
-            Z = 7
-        })
-
-        Items.RowUnderline.Instance.BackgroundTransparency = 1
-
-        local RowUnderlineGradient = Library:Create("UIGradient", {
-            Parent = Items.RowUnderline.Instance
-        })
-
-        RowUnderlineGradient.Instance.Transparency = NumberSequence.new({
-            NumberSequenceKeypoint.new(0, 0.4),
-            NumberSequenceKeypoint.new(0.5, 0),
-            NumberSequenceKeypoint.new(1, 0.4)
-        })
-
-        local RowUnderlineShadow = MakeAccentShadow(
-            Items.RowUnderline.Instance,
-            UDim2.fromOffset(0, 6),
-            UDim.new(0, 10),
-            1
-        )
 
         Items.Hit = MakeButton({
             Parent = Items.Row.Instance,
@@ -3391,45 +3283,14 @@ local Library = { } do
 
             Items.Row:Tween({ BackgroundTransparency = Active and 0 or 1 })
             Items.Bar:Tween({ Size = UDim2.fromOffset(3, Active and 16 or 0) })
-
-            Library:Tween({
-                Transparency = Active and 0.5 or 1
-            }, nil, Items.RowStroke.Instance)
-
-            Items.RowUnderline:Tween({
-                BackgroundTransparency = Active and 0 or 1,
-                Size = UDim2.fromOffset(Active and 28 or 10, 2)
-            })
-
-            if RowUnderlineShadow then
-                Library:Tween({
-                    Transparency = Active and 0.25 or 1
-                }, nil, RowUnderlineShadow)
-            end
         end
 
         Items.Row:OnHover(function()
             if Tab.Active then return end
-
             Items.Icon:Tween({ ImageColor3 = Library.Theme.Text })
-            Library:Tween({ Transparency = 0.82 }, nil, Items.RowStroke.Instance)
-            Items.RowUnderline:Tween({
-                BackgroundTransparency = 0.45,
-                Size = UDim2.fromOffset(18, 2)
-            })
         end, function()
             if Tab.Active then return end
-
             Items.Icon:Tween({ ImageColor3 = Library.Theme.DimIcon })
-            Library:Tween({ Transparency = 1 }, nil, Items.RowStroke.Instance)
-            Items.RowUnderline:Tween({
-                BackgroundTransparency = 1,
-                Size = UDim2.fromOffset(10, 2)
-            })
-
-            if RowUnderlineShadow then
-                Library:Tween({ Transparency = 1 }, nil, RowUnderlineShadow)
-            end
         end)
 
         local function EnterFirstSub()
@@ -3630,7 +3491,7 @@ local Library = { } do
             Library:StampResting(Items.Label.Instance, "TextTransparency", Active and 0 or 1)
 
             local Info = Instant and TweenInfo.new(0)
-            or TweenInfo.new(0.22, Enum.EasingStyle.Quint, Enum.EasingDirection.Out)
+            or TweenInfo.new(0.28, Enum.EasingStyle.Quart, Enum.EasingDirection.Out)
 
             local Width = Active and ExpandedW or CollapsedW
 
@@ -3653,8 +3514,8 @@ local Library = { } do
             Items.Icon:Tween({ ImageColor3 = Library.Theme.DimIcon })
         end)
 
-        local RowIn = TweenInfo.new(0.24, Enum.EasingStyle.Quint, Enum.EasingDirection.Out)
-        local Sink = TweenInfo.new(0.22, Enum.EasingStyle.Quint, Enum.EasingDirection.Out)
+        local RowIn = TweenInfo.new(0.3, Enum.EasingStyle.Quart, Enum.EasingDirection.Out)
+        local Sink = TweenInfo.new(0.28, Enum.EasingStyle.Quart, Enum.EasingDirection.Out)
 
         local PageSlide = 22
         local RowSlide = 18
@@ -3947,68 +3808,12 @@ local Library = { } do
             Parent = Items.Header.Instance,
             Text = Section.Name,
             TextSize = 15,
-            Bold = true,
             Anchor = Vector2.new(0, 0.5),
             Pos = UDim2.new(0, 13, 0.5, 1),
             Size = UDim2.fromOffset(HeaderTextW + 6, 20),
             Color = "Text",
             Z = 4
         })
-
-        Items.Underline = MakeFrame({
-            Parent = Items.Header.Instance,
-            Pos = UDim2.new(0, 13, 1, -3),
-            Size = UDim2.fromOffset(math.max(HeaderTextW - 4, 8), 2),
-            Color = "Accent",
-            Round = 2,
-            Z = 5
-        })
-
-        local UnderlineGradient = Library:Create("UIGradient", {
-            Parent = Items.Underline.Instance
-        })
-
-        UnderlineGradient.Instance.Transparency = NumberSequence.new({
-            NumberSequenceKeypoint.new(0, 0.15),
-            NumberSequenceKeypoint.new(0.5, 0),
-            NumberSequenceKeypoint.new(1, 0.15)
-        })
-
-        local UnderlineShadow = MakeAccentShadow(
-            Items.Underline.Instance,
-            UDim2.fromOffset(0, 6),
-            UDim.new(0, 12),
-            0.35
-        )
-
-        Items.HeaderStroke = Library:Create("UIStroke", {
-            Parent = Items.Header.Instance,
-            Color = Library.Theme.Text,
-            Thickness = 1,
-            Transparency = 0.85
-        }):AddToTheme({ Color = "Text" })
-
-        Library:Connect(Items.Header.Instance.MouseEnter, function()
-            Library:Tween({ Transparency = 0.6 }, nil, Items.HeaderStroke.Instance)
-            Library:Tween({
-                Size = UDim2.fromOffset(math.max(HeaderW - 18, 8), 2)
-            }, nil, Items.Underline.Instance)
-
-            if UnderlineShadow then
-                Library:Tween({ Transparency = 0.2 }, nil, UnderlineShadow)
-            end
-        end)
-
-        Library:Connect(Items.Header.Instance.MouseLeave, function()
-            Library:Tween({ Transparency = 0.85 }, nil, Items.HeaderStroke.Instance)
-            Library:Tween({
-                Size = UDim2.fromOffset(math.max(HeaderTextW - 4, 8), 2)
-            }, nil, Items.Underline.Instance)
-
-            if UnderlineShadow then
-                Library:Tween({ Transparency = 0.35 }, nil, UnderlineShadow)
-            end
-        end)
 
         local function SyncHeader()
             local Bounds = math.ceil(Items.Label.Instance.TextBounds.X)
@@ -4020,7 +3825,6 @@ local Library = { } do
             Items.Label.Instance.Size = UDim2.fromOffset(Bounds + 6, 20)
             Items.Header.Instance.Size = UDim2.fromOffset(HeaderW, 25)
             Items.HeaderFill.Instance.Size = UDim2.fromOffset(HeaderW, 10)
-            Items.Underline.Instance.Size = UDim2.fromOffset(math.max(Bounds - 4, 8), 2)
         end
 
         Library:Connect(Items.Label.Instance:GetPropertyChangedSignal("TextBounds"), SyncHeader)
@@ -4041,23 +3845,6 @@ local Library = { } do
             Size = UDim2.fromOffset(10, 10),
             Color = "Section",
             Z = 3
-        })
-
-        Items.BodyStroke = Library:Create("UIStroke", {
-            Parent = Items.Frame.Instance,
-            Color = Library.Theme.Text,
-            Thickness = 1,
-            Transparency = 0.82
-        }):AddToTheme({ Color = "Text" })
-
-        local BodyGradient = Library:Create("UIGradient", {
-            Parent = Items.Frame.Instance,
-            Rotation = 90
-        })
-
-        BodyGradient.Instance.Transparency = NumberSequence.new({
-            NumberSequenceKeypoint.new(0, 0),
-            NumberSequenceKeypoint.new(1, 0.55)
         })
 
         Section.Items = Items
@@ -4188,9 +3975,10 @@ local Library = { } do
         Toggle.Items = Items
 
         local Pad = 4
-        local Small = UDim2.fromOffset(13, 13)
+        local InnerW = 35 - Pad * 2
         local LeftPos = UDim2.new(0, Pad, 0.5, 0)
-        local RightPos = UDim2.new(1, -(Pad + 13), 0.5, 0)
+        local RightPos = UDim2.new(1, -Pad, 0.5, 0)
+        local Small = UDim2.fromOffset(13, 13)
 
         function Toggle.SetVisual(State, Instant)
             State = State and true or false
@@ -4214,11 +4002,15 @@ local Library = { } do
 
             Toggle.GrowTween = nil
             Toggle.SnapTween = nil
+
             local BoxColor = State and "Light" or "Element"
             local CircleKey = State and "Accent" or "DimText"
             local CircleColor = Library.Theme[CircleKey]
             local LabelColor = State and "Text" or "DimText"
 
+            local StartAnchor = State and Vector2.new(0, 0.5) or Vector2.new(1, 0.5)
+            local StartPos = State and LeftPos or RightPos
+            local EndAnchor = State and Vector2.new(1, 0.5) or Vector2.new(0, 0.5)
             local EndPos = State and RightPos or LeftPos
 
             Items.Box:ChangeItemTheme({ BackgroundColor3 = BoxColor })
@@ -4230,18 +4022,39 @@ local Library = { } do
                 Items.Label.Instance.TextColor3 = Library.Theme[LabelColor]
                 Items.Circle.Instance.BackgroundColor3 = CircleColor
                 Items.Circle.Instance.Size = Small
+                Items.Circle.Instance.AnchorPoint = EndAnchor
                 Items.Circle.Instance.Position = EndPos
                 return
             end
 
-            local Slide = TweenInfo.new(0.18, Enum.EasingStyle.Quint, Enum.EasingDirection.Out)
+            local Grow = TweenInfo.new(0.14, Enum.EasingStyle.Quart, Enum.EasingDirection.Out)
+            local Snap = TweenInfo.new(0.16, Enum.EasingStyle.Back, Enum.EasingDirection.Out)
+            local Fade = TweenInfo.new(0.2, Enum.EasingStyle.Quart, Enum.EasingDirection.Out)
 
-            Library:Tween({ BackgroundColor3 = Library.Theme[BoxColor] }, Slide, Items.Box.Instance)
-            Library:Tween({ TextColor3 = Library.Theme[LabelColor] }, Slide, Items.Label.Instance)
-            Library:Tween({ BackgroundColor3 = CircleColor }, Slide, Items.Circle.Instance)
+            Library:Tween({ BackgroundColor3 = Library.Theme[BoxColor] }, Fade, Items.Box.Instance)
+            Library:Tween({ TextColor3 = Library.Theme[LabelColor] }, Fade, Items.Label.Instance)
+            Library:Tween({ BackgroundColor3 = CircleColor }, Fade, Items.Circle.Instance)
 
-            Items.Circle.Instance.Size = Small
-            Toggle.SnapTween = Library:Tween({ Position = EndPos }, Slide, Items.Circle.Instance)
+            Items.Circle.Instance.AnchorPoint = StartAnchor
+            Items.Circle.Instance.Position = StartPos
+            Toggle.GrowTween = Library:Tween({ Size = UDim2.fromOffset(InnerW, 13) }, Grow, Items.Circle.Instance)
+
+            task.delay(0.08, function()
+                if Toggle.Token ~= Token then return end
+
+                Items.Circle.Instance.AnchorPoint = EndAnchor
+                Items.Circle.Instance.Position = EndPos
+                Toggle.SnapTween = Library:Tween({ Size = Small }, Snap, Items.Circle.Instance)
+            end)
+
+            task.delay(0.3, function()
+                if Toggle.Token ~= Token then return end
+                if Items.Circle.Instance.Size == Small then return end
+
+                Items.Circle.Instance.AnchorPoint = EndAnchor
+                Items.Circle.Instance.Position = EndPos
+                Items.Circle.Instance.Size = Small
+            end)
         end
 
         function Toggle:Set(Bool)
@@ -4704,7 +4517,7 @@ local Library = { } do
         return setmetatable(Toggle, Library)
     end
 
-    local SlideInfo = TweenInfo.new(0.2, Enum.EasingStyle.Quint, Enum.EasingDirection.Out)
+    local SlideInfo = TweenInfo.new(0.28, Enum.EasingStyle.Quart, Enum.EasingDirection.Out)
     local KnobColor = Color3.fromRGB(197, 197, 197)
 
     local function MakeKnob(Parent)
@@ -4791,17 +4604,17 @@ local Library = { } do
         local Section = Self
 
         local Slider = {
-            Name = Params.Name or "Slider",
-            Min = Params.Min or 0,
-            Max = Params.Max or 100,
-            Default = Params.Default or 0,
-            Decimals = Params.Decimals or 1,
-            Suffix = Params.Suffix or "",
-            Flag = Params.Flag,
-            Callback = Params.Callback or function() end,
-            Value = 0,
-            Sliding = false
-        }
+    Name = Params.Name or "Slider",
+    Min = tonumber(Params.Min) or 0,
+    Max = tonumber(Params.Max) or 100,
+    Default = tonumber(Params.Default) or 0,
+    Decimals = tonumber(Params.Decimals) or 1,
+    Suffix = Params.Suffix or "",
+    Flag = Params.Flag,
+    Callback = type(Params.Callback) == "function" and Params.Callback or function() end,
+    Value = 0,
+    Sliding = false
+}
 
         local Items = BuildSliderRow(Section, Slider.Name)
         local TrackW = Items.TrackWidth
@@ -4818,6 +4631,7 @@ local Library = { } do
             end
 
             local Span = Slider.Max - Slider.Min
+            if Span <= 0 then Span = 1 end -- Защита от деления на ноль/nil
             local Fraction = Span == 0 and 0 or (Slider.Value - Slider.Min) / Span
             local Info = Instant and TweenInfo.new(0) or SlideInfo
 
@@ -4897,6 +4711,7 @@ local Library = { } do
         end
 
         function Slider:Set(MinValue, MaxValue, Instant)
+            Value = tonumber(Value) or Slider.Min -- Если Value nil, используем Min
             if type(MinValue) == "table" then
                 MinValue, MaxValue = MinValue[1], MinValue[2]
             end
@@ -5023,8 +4838,8 @@ local Library = { } do
     end
 
     local function PlaySweep(Sweep)
-        local In = TweenInfo.new(0.18, Enum.EasingStyle.Quint, Enum.EasingDirection.Out)
-        local Out = TweenInfo.new(0.25, Enum.EasingStyle.Quint, Enum.EasingDirection.Out)
+        local In = TweenInfo.new(0.16, Enum.EasingStyle.Quart, Enum.EasingDirection.Out)
+        local Out = TweenInfo.new(0.32, Enum.EasingStyle.Quart, Enum.EasingDirection.Out)
 
         Sweep.Size = UDim2.new(0, 0, 1, 0)
         Sweep.BackgroundTransparency = 1
@@ -6184,7 +5999,7 @@ local Library = { } do
                 local Index = table.find(Config.Rows, Data)
                 if Index then table.remove(Config.Rows, Index) end
 
-                local Sink = TweenInfo.new(0.22, Enum.EasingStyle.Quint, Enum.EasingDirection.Out)
+                local Sink = TweenInfo.new(0.28, Enum.EasingStyle.Quart, Enum.EasingDirection.Out)
 
                 Library:Tween({ Size = UDim2.fromOffset(ColW, 0) }, Sink, Slot.Instance)
                 Row:FadeDescendants(false)
@@ -6370,7 +6185,7 @@ local Library = { } do
         Params = Params or { }
 
         if Library.WatermarkBar then
-            return Library.WatermarkInstance
+            return Library.WatermarkBar
         end
 
         local Icon = Params.Icon or (Self and Self.Icon) or "layers"
@@ -6388,30 +6203,6 @@ local Library = { } do
         })
 
         Items.Bar.Instance.AutomaticSize = Enum.AutomaticSize.X
-
-        Library:Create("UIStroke", {
-            Parent = Items.Bar.Instance,
-            Color = Library.Theme.Text,
-            Thickness = 1,
-            Transparency = 0.85
-        }):AddToTheme({ Color = "Text" })
-
-        local BarGlow = MakeAccentShadow(
-            Items.Bar.Instance,
-            UDim2.fromOffset(0, 8),
-            UDim.new(0, 16),
-            0.55
-        )
-
-        local BarGradient = Library:Create("UIGradient", {
-            Parent = Items.Bar.Instance,
-            Rotation = 90
-        })
-
-        BarGradient.Instance.Transparency = NumberSequence.new({
-            NumberSequenceKeypoint.new(0, 0),
-            NumberSequenceKeypoint.new(1, 0.4)
-        })
 
         Library:Create("UIPadding", {
             Parent = Items.Bar.Instance,
@@ -6443,29 +6234,6 @@ local Library = { } do
 
         Items.Icon.Instance.LayoutOrder = NextOrder()
 
-        local function Title(Text)
-            local Label = MakeText({
-                Parent = Items.Bar.Instance,
-                Text = Text,
-                TextSize = 15,
-                Size = UDim2.fromOffset(0, 16),
-                Color = "Text",
-                Z = 62
-            })
-
-            Label.Instance.AutomaticSize = Enum.AutomaticSize.X
-            Label.Instance.LayoutOrder = NextOrder()
-
-            local Stroke = Library:Create("UIStroke", {
-                Parent = Label.Instance,
-                Color = Library.Theme.Text,
-                Thickness = 1,
-                Transparency = 0.6
-            }):AddToTheme({ Color = "Text" })
-
-            return Label, Stroke
-        end
-
         local function Separator()
             local Sep = MakeFrame({
                 Parent = Items.Bar.Instance,
@@ -6475,22 +6243,6 @@ local Library = { } do
             })
 
             Sep.Instance.LayoutOrder = NextOrder()
-        end
-
-        local function Divider()
-            local Label = MakeText({
-                Parent = Items.Bar.Instance,
-                Text = "|",
-                TextSize = 14,
-                Size = UDim2.fromOffset(0, 16),
-                Color = "DimText",
-                Z = 61
-            })
-
-            Label.Instance.AutomaticSize = Enum.AutomaticSize.X
-            Label.Instance.LayoutOrder = NextOrder()
-
-            return Label
         end
 
         local function Stat(Text)
@@ -6509,32 +6261,14 @@ local Library = { } do
             return Label
         end
 
-        local TitleLabel = Title("socium.lol")
-        TitleLabel.Instance.FontFace = Library.TitleFont
-
         Separator()
         local GameStat = Stat("...")
-        Divider()
-        local FpsStat = Stat("000 fps")
-        Divider()
-        local PingStat = Stat("000 ms")
-        Divider()
-        local TimeStat = Stat(os.date("%H:%M:%S"))
-
-        for _, Label in { GameStat, FpsStat, PingStat, TimeStat } do
-            Label.Instance.FontFace = Library.MonoFont
-        end
-
-        if BarGlow then
-            Library:Thread(function()
-                while Items.Bar.Instance.Parent do
-                    Library:Tween({ Transparency = 0.25 }, TweenInfo.new(1.6, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut), BarGlow)
-                    task.wait(1.7)
-                    Library:Tween({ Transparency = 0.6 }, TweenInfo.new(1.6, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut), BarGlow)
-                    task.wait(1.7)
-                end
-            end)
-        end
+        Separator()
+        local FpsStat = Stat("0 fps")
+        Separator()
+        local PingStat = Stat("0 ms")
+        Separator()
+        local TimeStat = Stat(os.date("%I:%M %p"))
 
         Library:Thread(function()
             local Ok, Info = pcall(function()
@@ -6551,13 +6285,10 @@ local Library = { } do
         end)
 
         Library:Thread(function()
-            local SmoothFps = 0
-            local SmoothPing = 0
-
             while task.wait(0.5) do
                 if not Items.Bar.Instance.Parent then break end
 
-                SmoothFps = SmoothFps == 0 and Frames * 2 or SmoothFps + (Frames * 2 - SmoothFps) * 0.4
+                FpsStat.Instance.Text = tostring(Frames * 2) .. " fps"
                 Frames = 0
 
                 local Ping = 0
@@ -6567,67 +6298,26 @@ local Library = { } do
                     Ping = math.floor(Stat:GetValue())
                 end)
 
-                SmoothPing = SmoothPing == 0 and Ping or SmoothPing + (Ping - SmoothPing) * 0.4
-
-                FpsStat.Instance.Text = string.format("%03d fps", math.floor(SmoothFps + 0.5))
-                PingStat.Instance.Text = string.format("%03d ms", math.floor(SmoothPing + 0.5))
-                TimeStat.Instance.Text = os.date("%H:%M:%S")
+                PingStat.Instance.Text = tostring(Ping) .. " ms"
+                TimeStat.Instance.Text = os.date("%I:%M %p")
             end
         end)
 
         Items.Bar:MakeDraggable()
-        Items.Bar.Instance.Visible = false
         Library.WatermarkBar = Items.Bar
 
-        local Watermark = {
-            Instance = Items.Bar.Instance,
-            Visible = false,
-            Name = "socium.lol",
-            Icon = Icon
-        }
+        local Watermark = { Instance = Items.Bar.Instance }
 
         function Watermark:SetIcon(NewIcon)
-            Watermark.Icon = NewIcon
             ApplyIcon(Items.Icon.Instance, NewIcon)
         end
 
-        function Watermark:SetName(NewName)
-            Watermark.Name = NewName or Watermark.Name
-            TitleLabel.Instance.Text = Watermark.Name
+        function Watermark:SetName()
         end
 
         function Watermark:SetVisible(Bool)
-            Bool = Bool and true or false
-            Watermark.Visible = Bool
-            Library.WatermarkVisible = Bool
-            Library.WatermarkVisible = Bool
-
-            if Bool then
-                Items.Bar.Instance.Visible = true
-                Items.Bar:FadeDescendants(true)
-                return
-            end
-
-            Items.Bar:FadeDescendants(false)
-            task.delay(Library.Animation.Time + 0.04, function()
-                if not Watermark.Visible then
-                    Items.Bar.Instance.Visible = false
-                end
-            end)
+            Items.Bar:FadeDescendants(Bool)
         end
-
-        function Watermark:Toggle()
-            Watermark:SetVisible(not Watermark.Visible)
-            return Watermark.Visible
-        end
-
-        Library:SetWatermark = function(Self, Bool)
-            Watermark:SetVisible(Bool)
-            Library.WatermarkVisible = Bool and true or false
-        end
-
-        Library.WatermarkVisible = false
-        Library.WatermarkInstance = Watermark
 
         return Watermark
     end
