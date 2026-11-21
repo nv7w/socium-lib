@@ -4623,24 +4623,36 @@ local Library = { } do
         Items.Knob = MakeKnob(Items.Track.Instance)
 
         function Slider:Set(Value, Instant)
-            local Clamped = math.clamp(Value, Slider.Min, Slider.Max)
-            Slider.Value = Library:Round(Clamped, Slider.Decimals)
-
-            if Slider.Flag then
-                Library.Flags[Slider.Flag] = Slider.Value
-            end
-
-            local Span = Slider.Max - Slider.Min
-            if Span <= 0 then Span = 1 end -- Защита от деления на ноль/nil
-            local Fraction = Span == 0 and 0 or (Slider.Value - Slider.Min) / Span
-            local Info = Instant and TweenInfo.new(0) or SlideInfo
-
-            Library:Tween({ Size = UDim2.fromOffset(Fraction * TrackW, 10) }, Info, Items.Fill.Instance)
-            Library:Tween({ Position = UDim2.new(Fraction, 0, 0.5, 0) }, Info, Items.Knob.Instance)
-
-            Items.Value.Instance.Text = tostring(Slider.Value) .. Slider.Suffix
-            Library:SafeCall(Slider.Callback, Slider.Value)
-        end
+    -- Защита от nil и нечисловых значений
+    Value = tonumber(Value)
+    if Value == nil then Value = Slider.Min end
+    
+    local Min = tonumber(Slider.Min) or 0
+    local Max = tonumber(Slider.Max) or 100
+    
+    -- Гарантируем корректный порядок
+    if Min > Max then Min, Max = Max, Min end
+    
+    local Clamped = math.clamp(Value, Min, Max)
+    Slider.Value = Library:Round(Clamped, Slider.Decimals)
+    
+    if Slider.Flag then
+        Library.Flags[Slider.Flag] = Slider.Value
+    end
+    
+    local Span = Max - Min
+    local Fraction = 0
+    if Span > 0 then
+        Fraction = (Slider.Value - Min) / Span
+    end
+    Fraction = math.clamp(Fraction, 0, 1)
+    
+    local Info = Instant and TweenInfo.new(0) or SlideInfo
+    Library:Tween({ Size = UDim2.fromOffset(Fraction * TrackW, 10) }, Info, Items.Fill.Instance)
+    Library:Tween({ Position = UDim2.new(Fraction, 0, 0.5, 0) }, Info, Items.Knob.Instance)
+    Items.Value.Instance.Text = tostring(Slider.Value) .. Slider.Suffix
+    Library:SafeCall(Slider.Callback, Slider.Value)
+end
 
         function Slider:Get()
             return Slider.Value
