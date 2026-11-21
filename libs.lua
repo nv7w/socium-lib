@@ -4603,7 +4603,7 @@ local Library = { } do
 
         local Section = Self
 
-        local Slider = {
+       local Slider = {
     Name = Params.Name or "Slider",
     Min = tonumber(Params.Min) or 0,
     Max = tonumber(Params.Max) or 100,
@@ -4706,50 +4706,46 @@ local Library = { } do
         Items.MaxKnob = MakeKnob(Items.Track.Instance)
 
         local function Normalize(Value)
-            local Span = Slider.Max - Slider.Min
-            return Span == 0 and 0 or (Value - Slider.Min) / Span
-        end
+    local Min = tonumber(Slider.Min) or 0
+    local Max = tonumber(Slider.Max) or 100
+    if Min > Max then Min, Max = Max, Min end
+    local Span = Max - Min
+    if Span <= 0 then return 0 end
+    Value = tonumber(Value) or Min
+    return (Value - Min) / Span
+end
 
-        function Slider:Set(MinValue, MaxValue, Instant)
-            Value = tonumber(Value) or Slider.Min -- Если Value nil, используем Min
-            if type(MinValue) == "table" then
-                MinValue, MaxValue = MinValue[1], MinValue[2]
-            end
+        function Slider:Set(Value, Instant)
+    -- Защита от nil и нечисловых значений
+    Value = tonumber(Value)
+    if Value == nil then Value = Slider.Min end
 
-            MinValue = math.clamp(MinValue or Slider.Min, Slider.Min, Slider.Max)
-            MaxValue = math.clamp(MaxValue or Slider.Max, Slider.Min, Slider.Max)
+    local Min = tonumber(Slider.Min) or 0
+    local Max = tonumber(Slider.Max) or 100
 
-            MinValue = Library:Round(MinValue, Slider.Decimals)
-            MaxValue = Library:Round(MaxValue, Slider.Decimals)
+    -- Гарантируем корректный порядок
+    if Min > Max then Min, Max = Max, Min end
 
-            if MinValue > MaxValue then
-                MinValue, MaxValue = MaxValue, MinValue
-            end
+    local Clamped = math.clamp(Value, Min, Max)
+    Slider.Value = Library:Round(Clamped, Slider.Decimals)
 
-            Slider.Value = { MinValue, MaxValue }
+    if Slider.Flag then
+        Library.Flags[Slider.Flag] = Slider.Value
+    end
 
-            if Slider.Flag then
-                Library.Flags[Slider.Flag] = Slider.Value
-            end
+    local Span = Max - Min
+    local Fraction = 0
+    if Span > 0 then
+        Fraction = (Slider.Value - Min) / Span
+    end
+    Fraction = math.clamp(Fraction, 0, 1)
 
-            local MinF = Normalize(MinValue)
-            local MaxF = Normalize(MaxValue)
-            local Info = Instant and TweenInfo.new(0) or SlideInfo
-
-            Library:Tween({
-                Position = UDim2.fromOffset(MinF * TrackW, 0),
-                Size = UDim2.fromOffset((MaxF - MinF) * TrackW, 10)
-            }, Info, Items.Fill.Instance)
-
-            Library:Tween({ Position = UDim2.new(MinF, 0, 0.5, 0) }, Info, Items.MinKnob.Instance)
-            Library:Tween({ Position = UDim2.new(MaxF, 0, 0.5, 0) }, Info, Items.MaxKnob.Instance)
-
-            local Text = tostring(MinValue) .. Slider.Suffix
-            Text = Text .. " - " .. tostring(MaxValue) .. Slider.Suffix
-
-            Items.Value.Instance.Text = Text
-            Library:SafeCall(Slider.Callback, Slider.Value)
-        end
+    local Info = Instant and TweenInfo.new(0) or SlideInfo
+    Library:Tween({ Size = UDim2.fromOffset(Fraction * TrackW, 10) }, Info, Items.Fill.Instance)
+    Library:Tween({ Position = UDim2.new(Fraction, 0, 0.5, 0) }, Info, Items.Knob.Instance)
+    Items.Value.Instance.Text = tostring(Slider.Value) .. Slider.Suffix
+    Library:SafeCall(Slider.Callback, Slider.Value)
+end
 
         function Slider:Get()
             return Slider.Value
