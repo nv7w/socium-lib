@@ -111,11 +111,12 @@ local Library = { } do
         if not MainOk then warn(MainFont) end
 
         UiFont = (MainOk and MainFont) or Font.fromEnum(Enum.Font.GothamMedium)
-        UiFontBold = UiFont
+        UiFontBold = Font.fromEnum(Enum.Font.GothamBold)
     end
 
     Library.Font = UiFont
     Library.TitleFont = UiFontBold
+    Library.MonoFont = Font.fromEnum(Enum.Font.Code)
 
     local IconPack
 
@@ -201,15 +202,15 @@ local Library = { } do
     Library.WindowHeight = 540
 
     Library.Theme = {
-        Background = Color3.fromRGB(10, 10, 12),
-        Section = Color3.fromRGB(18, 18, 22),
-        Element = Color3.fromRGB(24, 24, 29),
-        Light = Color3.fromRGB(32, 32, 38),
-        Hover = Color3.fromRGB(42, 42, 48),
-        Line = Color3.fromRGB(34, 34, 40),
+        Background = Color3.fromRGB(11, 11, 13),
+        Section = Color3.fromRGB(17, 17, 20),
+        Element = Color3.fromRGB(23, 23, 27),
+        Light = Color3.fromRGB(30, 30, 35),
+        Hover = Color3.fromRGB(38, 38, 44),
+        Line = Color3.fromRGB(32, 32, 37),
         Text = Color3.fromRGB(255, 255, 255),
-        DimText = Color3.fromRGB(150, 150, 160),
-        DimIcon = Color3.fromRGB(150, 150, 160),
+        DimText = Color3.fromRGB(142, 142, 150),
+        DimIcon = Color3.fromRGB(142, 142, 150),
         Accent = Color3.fromRGB(255, 255, 255)
     }
 
@@ -330,10 +331,12 @@ local Library = { } do
     Library.PreloadClock = 0
     Library.Preloaded = setmetatable({ }, { __mode = "k" })
     Library.Animation = {
-        Time = 0.25,
-        Style = Enum.EasingStyle.Quart,
+        Time = 0.22,
+        Style = Enum.EasingStyle.Quint,
         Direction = Enum.EasingDirection.Out
     }
+
+    Library.RunningTweens = setmetatable({ }, { __mode = "k" })
 
     Library.Create = function(Self, Class, Properties)
         local Data = {
@@ -461,7 +464,50 @@ local Library = { } do
             Library.Animation.Direction
         )
 
+        local Running = Library.RunningTweens[Object]
+
+        if not Running then
+            Running = { }
+            Library.RunningTweens[Object] = Running
+        end
+
+        for Index = #Running, 1, -1 do
+            local Entry = Running[Index]
+            local Overlaps = false
+
+            for Property in Properties do
+                if Entry.Properties[Property] then
+                    Overlaps = true
+                    break
+                end
+            end
+
+            if Overlaps then
+                pcall(function() Entry.Tween:Cancel() end)
+                table.remove(Running, Index)
+            end
+        end
+
         local NewTween = TweenService:Create(Object, Info, Properties)
+        local Entry = { Tween = NewTween, Properties = { } }
+
+        for Property in Properties do
+            Entry.Properties[Property] = true
+        end
+
+        table.insert(Running, Entry)
+
+        NewTween.Completed:Connect(function()
+            local Store = Library.RunningTweens[Object]
+            if not Store then return end
+
+            for Index = #Store, 1, -1 do
+                if Store[Index] == Entry then
+                    table.remove(Store, Index)
+                end
+            end
+        end)
+
         NewTween:Play()
 
         return NewTween
@@ -978,7 +1024,7 @@ local Library = { } do
         return Library:Create("TextLabel", {
             Parent = Params.Parent,
             Name = "\0",
-            FontFace = Params.Bold and UiFontBold or UiFont,
+            FontFace = Params.Mono and Library.MonoFont or (Params.Bold and UiFontBold or UiFont),
             Text = Params.Text or "",
             TextSize = Params.TextSize or 15,
             TextColor3 = Library.Theme[Params.Color or "Text"],
@@ -1037,7 +1083,7 @@ local Library = { } do
         local Input = Library:Create("TextBox", {
             Parent = Params.Parent,
             Name = "\0",
-            FontFace = UiFont,
+            FontFace = Params.Mono and Library.MonoFont or UiFont,
             TextColor3 = Library.Theme.Text,
             PlaceholderColor3 = Library.Theme.DimText,
             PlaceholderText = Params.Placeholder or "",
@@ -1961,7 +2007,7 @@ local Library = { } do
         })
 
         local Grabbing = nil
-        local SlideInfo = TweenInfo.new(0.2, Enum.EasingStyle.Quart, Enum.EasingDirection.Out)
+        local SlideInfo = TweenInfo.new(0.2, Enum.EasingStyle.Quint, Enum.EasingDirection.Out)
 
         local function Refresh(Instant)
             Picker.Color = Color3.fromHSV(Picker.Hue, Picker.Saturation, Picker.Value)
@@ -2275,7 +2321,7 @@ local Library = { } do
         end
 
         local function Reflow()
-            local Info = TweenInfo.new(0.3, Enum.EasingStyle.Quart, Enum.EasingDirection.Out)
+            local Info = TweenInfo.new(0.22, Enum.EasingStyle.Quint, Enum.EasingDirection.Out)
             local Y = 15
 
             for _, Value in Library.Notifs do
@@ -2287,7 +2333,7 @@ local Library = { } do
         end
 
         local StartY = StackHeight(Notif)
-        local SlideIn = TweenInfo.new(0.45, Enum.EasingStyle.Exponential, Enum.EasingDirection.Out)
+        local SlideIn = TweenInfo.new(0.26, Enum.EasingStyle.Quint, Enum.EasingDirection.Out)
 
         Items.Frame.Instance.Position = UDim2.new(1, 340, 0, StartY)
         Items.Frame:Tween({ Position = UDim2.new(1, -15, 0, StartY) }, SlideIn)
@@ -2296,7 +2342,7 @@ local Library = { } do
             if Notif.Dead then return end
             Notif.Dead = true
 
-            local Fade = TweenInfo.new(0.25, Enum.EasingStyle.Quart, Enum.EasingDirection.Out)
+            local Fade = TweenInfo.new(0.22, Enum.EasingStyle.Quint, Enum.EasingDirection.Out)
             local Current = Items.Frame.Instance.Position
             local Lift = UDim2.new(1, -15, 0, Current.Y.Offset - 14)
 
@@ -2387,18 +2433,8 @@ local Library = { } do
             Parent = Items.Main.Instance,
             Color = Library.Theme.Text,
             Thickness = 1,
-            Transparency = 0.82
+            Transparency = 0.85
         }):AddToTheme({ Color = "Text" })
-
-        local MainGlow = Library:Create("UIGradient", {
-            Parent = Items.Main.Instance,
-            Rotation = 45
-        })
-
-        MainGlow.Instance.Transparency = NumberSequence.new({
-            NumberSequenceKeypoint.new(0, 0),
-            NumberSequenceKeypoint.new(1, 0.35)
-        })
 
         Items.Rail = MakeFrame({
             Parent = Items.Root.Instance,
@@ -2441,21 +2477,15 @@ local Library = { } do
             Z = 2
         })
 
-        MakeFrame({
-            Parent = Items.TopBar.Instance,
-            Pos = UDim2.fromOffset(0, TopH - 12),
-            Size = UDim2.fromOffset(W, 12),
-            Color = "Section",
-            Z = 2
-        })
-
         Items.TopLine = MakeFrame({
             Parent = Items.Main.Instance,
             Pos = UDim2.fromOffset(0, 50),
             Size = UDim2.fromOffset(W, 1),
-            Color = "Element",
+            Color = "Accent",
             Z = 3
         })
+
+        Items.TopLine.Instance.BackgroundTransparency = 0.88
 
         Items.HubIcon = MakeImage({
             Parent = Items.TopBar.Instance,
@@ -3059,7 +3089,7 @@ local Library = { } do
             local NewX = SubCenterX - math.floor(Target / 2)
 
             local Info = Instant and TweenInfo.new(0)
-            or TweenInfo.new(0.24, Enum.EasingStyle.Quart, Enum.EasingDirection.Out)
+            or TweenInfo.new(0.22, Enum.EasingStyle.Quint, Enum.EasingDirection.Out)
 
             Library:Tween({
                 Position = UDim2.fromOffset(NewX, SubY),
@@ -3176,6 +3206,18 @@ local Library = { } do
 
             Items.Root:FadeDescendants(true)
             Library:Tween({ Position = Base }, Rise, Items.Root.Instance)
+        end
+
+        function Window:SetWatermark(Bool)
+            if not Library.WatermarkBar then
+                Library:Watermark({ Icon = Self.Icon })
+            end
+
+            if Library.SetWatermark then
+                Library:SetWatermark(Bool)
+            end
+
+            return Library.WatermarkVisible
         end
 
         task.defer(function()
@@ -3588,7 +3630,7 @@ local Library = { } do
             Library:StampResting(Items.Label.Instance, "TextTransparency", Active and 0 or 1)
 
             local Info = Instant and TweenInfo.new(0)
-            or TweenInfo.new(0.28, Enum.EasingStyle.Quart, Enum.EasingDirection.Out)
+            or TweenInfo.new(0.22, Enum.EasingStyle.Quint, Enum.EasingDirection.Out)
 
             local Width = Active and ExpandedW or CollapsedW
 
@@ -3611,8 +3653,8 @@ local Library = { } do
             Items.Icon:Tween({ ImageColor3 = Library.Theme.DimIcon })
         end)
 
-        local RowIn = TweenInfo.new(0.3, Enum.EasingStyle.Quart, Enum.EasingDirection.Out)
-        local Sink = TweenInfo.new(0.28, Enum.EasingStyle.Quart, Enum.EasingDirection.Out)
+        local RowIn = TweenInfo.new(0.24, Enum.EasingStyle.Quint, Enum.EasingDirection.Out)
+        local Sink = TweenInfo.new(0.22, Enum.EasingStyle.Quint, Enum.EasingDirection.Out)
 
         local PageSlide = 22
         local RowSlide = 18
@@ -3905,6 +3947,7 @@ local Library = { } do
             Parent = Items.Header.Instance,
             Text = Section.Name,
             TextSize = 15,
+            Bold = true,
             Anchor = Vector2.new(0, 0.5),
             Pos = UDim2.new(0, 13, 0.5, 1),
             Size = UDim2.fromOffset(HeaderTextW + 6, 20),
@@ -4145,10 +4188,9 @@ local Library = { } do
         Toggle.Items = Items
 
         local Pad = 4
-        local InnerW = 35 - Pad * 2
-        local LeftPos = UDim2.new(0, Pad, 0.5, 0)
-        local RightPos = UDim2.new(1, -Pad, 0.5, 0)
         local Small = UDim2.fromOffset(13, 13)
+        local LeftPos = UDim2.new(0, Pad, 0.5, 0)
+        local RightPos = UDim2.new(1, -(Pad + 13), 0.5, 0)
 
         function Toggle.SetVisual(State, Instant)
             State = State and true or false
@@ -4172,15 +4214,11 @@ local Library = { } do
 
             Toggle.GrowTween = nil
             Toggle.SnapTween = nil
-
             local BoxColor = State and "Light" or "Element"
             local CircleKey = State and "Accent" or "DimText"
             local CircleColor = Library.Theme[CircleKey]
             local LabelColor = State and "Text" or "DimText"
 
-            local StartAnchor = State and Vector2.new(0, 0.5) or Vector2.new(1, 0.5)
-            local StartPos = State and LeftPos or RightPos
-            local EndAnchor = State and Vector2.new(1, 0.5) or Vector2.new(0, 0.5)
             local EndPos = State and RightPos or LeftPos
 
             Items.Box:ChangeItemTheme({ BackgroundColor3 = BoxColor })
@@ -4192,39 +4230,18 @@ local Library = { } do
                 Items.Label.Instance.TextColor3 = Library.Theme[LabelColor]
                 Items.Circle.Instance.BackgroundColor3 = CircleColor
                 Items.Circle.Instance.Size = Small
-                Items.Circle.Instance.AnchorPoint = EndAnchor
                 Items.Circle.Instance.Position = EndPos
                 return
             end
 
-            local Grow = TweenInfo.new(0.14, Enum.EasingStyle.Quart, Enum.EasingDirection.Out)
-            local Snap = TweenInfo.new(0.16, Enum.EasingStyle.Back, Enum.EasingDirection.Out)
-            local Fade = TweenInfo.new(0.2, Enum.EasingStyle.Quart, Enum.EasingDirection.Out)
+            local Slide = TweenInfo.new(0.18, Enum.EasingStyle.Quint, Enum.EasingDirection.Out)
 
-            Library:Tween({ BackgroundColor3 = Library.Theme[BoxColor] }, Fade, Items.Box.Instance)
-            Library:Tween({ TextColor3 = Library.Theme[LabelColor] }, Fade, Items.Label.Instance)
-            Library:Tween({ BackgroundColor3 = CircleColor }, Fade, Items.Circle.Instance)
+            Library:Tween({ BackgroundColor3 = Library.Theme[BoxColor] }, Slide, Items.Box.Instance)
+            Library:Tween({ TextColor3 = Library.Theme[LabelColor] }, Slide, Items.Label.Instance)
+            Library:Tween({ BackgroundColor3 = CircleColor }, Slide, Items.Circle.Instance)
 
-            Items.Circle.Instance.AnchorPoint = StartAnchor
-            Items.Circle.Instance.Position = StartPos
-            Toggle.GrowTween = Library:Tween({ Size = UDim2.fromOffset(InnerW, 13) }, Grow, Items.Circle.Instance)
-
-            task.delay(0.08, function()
-                if Toggle.Token ~= Token then return end
-
-                Items.Circle.Instance.AnchorPoint = EndAnchor
-                Items.Circle.Instance.Position = EndPos
-                Toggle.SnapTween = Library:Tween({ Size = Small }, Snap, Items.Circle.Instance)
-            end)
-
-            task.delay(0.3, function()
-                if Toggle.Token ~= Token then return end
-                if Items.Circle.Instance.Size == Small then return end
-
-                Items.Circle.Instance.AnchorPoint = EndAnchor
-                Items.Circle.Instance.Position = EndPos
-                Items.Circle.Instance.Size = Small
-            end)
+            Items.Circle.Instance.Size = Small
+            Toggle.SnapTween = Library:Tween({ Position = EndPos }, Slide, Items.Circle.Instance)
         end
 
         function Toggle:Set(Bool)
@@ -4687,7 +4704,7 @@ local Library = { } do
         return setmetatable(Toggle, Library)
     end
 
-    local SlideInfo = TweenInfo.new(0.28, Enum.EasingStyle.Quart, Enum.EasingDirection.Out)
+    local SlideInfo = TweenInfo.new(0.2, Enum.EasingStyle.Quint, Enum.EasingDirection.Out)
     local KnobColor = Color3.fromRGB(197, 197, 197)
 
     local function MakeKnob(Parent)
@@ -5006,8 +5023,8 @@ local Library = { } do
     end
 
     local function PlaySweep(Sweep)
-        local In = TweenInfo.new(0.16, Enum.EasingStyle.Quart, Enum.EasingDirection.Out)
-        local Out = TweenInfo.new(0.32, Enum.EasingStyle.Quart, Enum.EasingDirection.Out)
+        local In = TweenInfo.new(0.18, Enum.EasingStyle.Quint, Enum.EasingDirection.Out)
+        local Out = TweenInfo.new(0.25, Enum.EasingStyle.Quint, Enum.EasingDirection.Out)
 
         Sweep.Size = UDim2.new(0, 0, 1, 0)
         Sweep.BackgroundTransparency = 1
@@ -6167,7 +6184,7 @@ local Library = { } do
                 local Index = table.find(Config.Rows, Data)
                 if Index then table.remove(Config.Rows, Index) end
 
-                local Sink = TweenInfo.new(0.28, Enum.EasingStyle.Quart, Enum.EasingDirection.Out)
+                local Sink = TweenInfo.new(0.22, Enum.EasingStyle.Quint, Enum.EasingDirection.Out)
 
                 Library:Tween({ Size = UDim2.fromOffset(ColW, 0) }, Sink, Slot.Instance)
                 Row:FadeDescendants(false)
@@ -6353,7 +6370,7 @@ local Library = { } do
         Params = Params or { }
 
         if Library.WatermarkBar then
-            return Library.WatermarkBar
+            return Library.WatermarkInstance
         end
 
         local Icon = Params.Icon or (Self and Self.Icon) or "layers"
@@ -6376,7 +6393,7 @@ local Library = { } do
             Parent = Items.Bar.Instance,
             Color = Library.Theme.Text,
             Thickness = 1,
-            Transparency = 0.7
+            Transparency = 0.85
         }):AddToTheme({ Color = "Text" })
 
         local BarGlow = MakeAccentShadow(
@@ -6493,15 +6510,20 @@ local Library = { } do
         end
 
         local TitleLabel = Title("socium.lol")
+        TitleLabel.Instance.FontFace = Library.TitleFont
 
         Separator()
         local GameStat = Stat("...")
         Divider()
-        local FpsStat = Stat("0 fps")
+        local FpsStat = Stat("000 fps")
         Divider()
-        local PingStat = Stat("0 ms")
+        local PingStat = Stat("000 ms")
         Divider()
-        local TimeStat = Stat(os.date("%I:%M %p"))
+        local TimeStat = Stat(os.date("%H:%M:%S"))
+
+        for _, Label in { GameStat, FpsStat, PingStat, TimeStat } do
+            Label.Instance.FontFace = Library.MonoFont
+        end
 
         if BarGlow then
             Library:Thread(function()
@@ -6529,10 +6551,13 @@ local Library = { } do
         end)
 
         Library:Thread(function()
+            local SmoothFps = 0
+            local SmoothPing = 0
+
             while task.wait(0.5) do
                 if not Items.Bar.Instance.Parent then break end
 
-                FpsStat.Instance.Text = tostring(Frames * 2) .. " fps"
+                SmoothFps = SmoothFps == 0 and Frames * 2 or SmoothFps + (Frames * 2 - SmoothFps) * 0.4
                 Frames = 0
 
                 local Ping = 0
@@ -6542,26 +6567,67 @@ local Library = { } do
                     Ping = math.floor(Stat:GetValue())
                 end)
 
-                PingStat.Instance.Text = tostring(Ping) .. " ms"
-                TimeStat.Instance.Text = os.date("%I:%M %p")
+                SmoothPing = SmoothPing == 0 and Ping or SmoothPing + (Ping - SmoothPing) * 0.4
+
+                FpsStat.Instance.Text = string.format("%03d fps", math.floor(SmoothFps + 0.5))
+                PingStat.Instance.Text = string.format("%03d ms", math.floor(SmoothPing + 0.5))
+                TimeStat.Instance.Text = os.date("%H:%M:%S")
             end
         end)
 
         Items.Bar:MakeDraggable()
+        Items.Bar.Instance.Visible = false
         Library.WatermarkBar = Items.Bar
 
-        local Watermark = { Instance = Items.Bar.Instance }
+        local Watermark = {
+            Instance = Items.Bar.Instance,
+            Visible = false,
+            Name = "socium.lol",
+            Icon = Icon
+        }
 
         function Watermark:SetIcon(NewIcon)
+            Watermark.Icon = NewIcon
             ApplyIcon(Items.Icon.Instance, NewIcon)
         end
 
-        function Watermark:SetName()
+        function Watermark:SetName(NewName)
+            Watermark.Name = NewName or Watermark.Name
+            TitleLabel.Instance.Text = Watermark.Name
         end
 
         function Watermark:SetVisible(Bool)
-            Items.Bar:FadeDescendants(Bool)
+            Bool = Bool and true or false
+            Watermark.Visible = Bool
+            Library.WatermarkVisible = Bool
+            Library.WatermarkVisible = Bool
+
+            if Bool then
+                Items.Bar.Instance.Visible = true
+                Items.Bar:FadeDescendants(true)
+                return
+            end
+
+            Items.Bar:FadeDescendants(false)
+            task.delay(Library.Animation.Time + 0.04, function()
+                if not Watermark.Visible then
+                    Items.Bar.Instance.Visible = false
+                end
+            end)
         end
+
+        function Watermark:Toggle()
+            Watermark:SetVisible(not Watermark.Visible)
+            return Watermark.Visible
+        end
+
+        Library:SetWatermark = function(Self, Bool)
+            Watermark:SetVisible(Bool)
+            Library.WatermarkVisible = Bool and true or false
+        end
+
+        Library.WatermarkVisible = false
+        Library.WatermarkInstance = Watermark
 
         return Watermark
     end
